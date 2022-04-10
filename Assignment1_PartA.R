@@ -39,7 +39,7 @@ min(trans_dt$monthly_amount)
 
 #number of transactions by industry and location
 
-p1 <- ggplot(data=trans_dt)+aes(x=as.factor(location))+geom_bar()+labs( x="Location", y="No. of transactions", title="Nnumber of transactions in each location")
+p1 <- ggplot(data=trans_dt)+aes(x=as.factor(location))+geom_bar()+labs( x="Location", y="No. of transactions", title="Number of transactions in each location")
 p2 <-ggplot(data=trans_dt)+aes(x=as.factor(industry))+geom_bar()+labs( x="Industry", y="No. of transactions", title="Number of transactions in each industry")
 grid.arrange(p1,p2, ncol=2)
 
@@ -124,8 +124,8 @@ agg_11 <- agg_dt %>%  filter(industry==1 & location==1)
    geom_point(color = "blue") +
   geom_line()  + 
    geom_smooth(method = lm, se = FALSE, colour="red")+
-   scale_x_date(date_labels = "%b-%Y") +
-   labs( x="Month-Year", y="Average monthly amount", title="Mean monthly amount- industry 1 & location 1 with the fitted linear regression line")
+   scale_x_date(limits = as.Date(c("2013-01-01","2016-12-01")), date_labels = "%b-%Y") +
+   labs(x="Month-Year", y="Average monthly amount", title="Mean monthly amount- industry 1 & location 1 with the fitted linear regression line")
 
 
 
@@ -253,7 +253,7 @@ newDec_16 <- Dec_dt$newprediction
 
 
 
-#plot actual data and prediction for December on the same data.
+#plot actual data and prediction for December 16 on the same data.
 ggplot() +
   geom_point(data = agg_11, aes(x = newdate, y = mean_monthly_amount), color = "blue") +
   geom_line(data = agg_11, aes(x = newdate, y = mean_monthly_amount), color = "green") +
@@ -396,6 +396,8 @@ Dec16_61
 
 
 
+
+
 ggplot() +
   geom_point(data = agg_61, aes(x = newdate, y = mean_monthly_amount), color = "blue") +
   geom_line(data = agg_61, aes(x = newdate, y = mean_monthly_amount), color = "green") +
@@ -405,17 +407,18 @@ ggplot() +
 
 
 #plot mean month =ly amount for location1 and industry 1 and fit a linear line in the 
-agg_810 <- agg_dt %>%  filter(industry==8 & location==10)
+agg_108 <- agg_dt %>%  filter(industry==10 & location==8)
+Dec16_108 <- pred_arrange$Dec16.prediction[2]
 
-ggplot(agg_810,  aes(x = newdate, y = mean_monthly_amount))+
-  geom_point(color = "blue") +
-  geom_line()  + 
-  geom_smooth(method = lm, se = FALSE, colour="red")+
-  scale_x_date(date_labels = "%b-%Y") +
-  labs( x="Month-Year", y="Average monthly amount", title="Monthly average transaction-industry 10 & location 8 with the fitted linear regression line")
 
-data_810 <-trans_dt %>% filter(industry==8 &location==10)
-View(data_810)
+ggplot() +
+  geom_point(data = agg_108, aes(x = newdate, y = mean_monthly_amount), color = "blue") +
+  geom_line(data = agg_108, aes(x = newdate, y = mean_monthly_amount), color = "green") +
+  geom_point(aes(x = as.Date("2016-12-01"), y = Dec16_108), color = "red")+
+  geom_line(aes(x=as.Date(c("2016-11-01","2016-12-01")),y=c(agg_108$mean_monthly_amount[nrow(agg_108)],Dec16_108)))+
+  scale_x_date(date_labels = "%b-%Y")+labs( x="Month-Year", y="mean monthly amount", title="Monthly average transaction & prediction for Dec 2016-industry 8 & location 10")
+
+
 
 
 
